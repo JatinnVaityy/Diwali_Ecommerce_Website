@@ -4,4 +4,10 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    outDir: 'dist', // make sure this matches your Express static path
+  },
+  server: {
+    historyApiFallback: true, // allows SPA routing locally
+  },
 })
