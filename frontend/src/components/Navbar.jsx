@@ -35,7 +35,7 @@ export default function Navbar() {
   const cartCount = items.reduce((sum, i) => sum + i.qty, 0);
 
   return (
-    <nav className="bg-yellow-100 shadow p-4">
+    <nav className="bg-yellow-100 shadow p-4 relative z-50">
       <div className="container mx-auto flex justify-between items-center">
         {/* Brand */}
         <Link to="/" className="font-bold text-xl text-orange-700">
@@ -127,9 +127,17 @@ export default function Navbar() {
         </button>
       </div>
 
+      {/* Overlay backdrop */}
+      {menuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
+
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-yellow-50 shadow-lg transform transition-transform ${
+        className={`fixed top-0 right-0 h-full w-64 bg-yellow-50 shadow-lg z-50 transform transition-transform ${
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
