@@ -1,13 +1,20 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  build: {
-    outDir: 'dist', // make sure this matches your Express static path
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
   },
   server: {
-    historyApiFallback: true, // allows SPA routing locally
+    port: 5173,
   },
-})
+  // 👇 Add this
+  build: {
+    outDir: "dist",
+  },
+  base: "/", // ensures correct routing on Vercel
+});
