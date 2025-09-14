@@ -49,7 +49,7 @@ export default function App() {
 
         {/* Footer */}
         <footer className="text-center p-4 border-t bg-white text-sm text-gray-600">
-          © {new Date().getFullYear()} Diwali Faral | All rights reserved.
+          © {new Date().getFullYear()} गोड आठवणी | All rights reserved.
         </footer>
 
         {/* Toast Notifications */}
