@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaWhatsapp } from 'react-icons/fa';
-
+import { ArrowLeft } from "lucide-react";
 export default function Checkout() {
   const { items, clear, total } = useCart();
   const [form, setForm] = useState({ customerName: '', customerEmail: '', address: '' });
@@ -105,13 +105,12 @@ export default function Checkout() {
         onSubmit={submit}
         className="w-full sm:w-full md:max-w-lg lg:max-w-xl bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-lg space-y-5 border border-orange-200"
       >
-        <button
-          onClick={() => navigate(-1)}
-          type="button"
-          className="self-start px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
-        >
-          ←
-        </button>
+       <button
+               onClick={() => navigate(-1)}
+               className="flex items-center gap-2 text-orange-600 font-medium mb-6 hover:text-orange-700 transition"
+             >
+               <ArrowLeft size={20} /> Back
+             </button>
 
         <h2 className="text-2xl sm:text-3xl font-bold text-orange-700 text-center">Checkout</h2>
 

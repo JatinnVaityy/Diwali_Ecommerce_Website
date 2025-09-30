@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../store/Cart";
+import { ArrowLeft } from "lucide-react"; // icon
 
 export default function CartPage() {
   const { items, remove, total, increase, decrease, clear } = useCart();
@@ -9,9 +10,11 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-[#fff7ed] px-4">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-4">Your cart is empty.</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4">
+          Your cart is empty.
+        </h2>
         <Link
-          to="/"
+          to="/products"
           className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
         >
           Shop now
@@ -22,8 +25,18 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen bg-[#fff7ed] px-4 py-10">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 text-orange-600 font-medium mb-6 hover:text-orange-700 transition"
+      >
+        <ArrowLeft size={20} /> Back
+      </button>
+
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-800 text-center sm:text-left">Your Cart</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-800 text-center sm:text-left">
+          Your Cart
+        </h2>
 
         <ul className="space-y-4">
           {items.map((i) => (
@@ -51,7 +64,9 @@ export default function CartPage() {
               </div>
 
               <div className="mt-3 sm:mt-0 text-right flex flex-col items-end">
-                <div className="font-semibold text-gray-800">₹{i.price * i.qty}</div>
+                <div className="font-semibold text-gray-800">
+                  ₹{i.price * i.qty}
+                </div>
                 <button
                   onClick={() => remove(i._id)}
                   className="text-red-600 text-sm mt-2 hover:underline"
@@ -64,7 +79,9 @@ export default function CartPage() {
         </ul>
 
         <div className="mt-8 flex flex-col sm:flex-row justify-between items-center border-t border-gray-300 pt-4">
-          <div className="text-xl sm:text-2xl font-bold mb-4 sm:mb-0">Total: ₹{total}</div>
+          <div className="text-xl sm:text-2xl font-bold mb-4 sm:mb-0">
+            Total: ₹{total}
+          </div>
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <button
               onClick={clear}
