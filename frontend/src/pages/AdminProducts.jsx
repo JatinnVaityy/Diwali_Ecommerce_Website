@@ -31,7 +31,7 @@ export default function AdminProducts() {
       const res = await API.get("/products", { headers: adminHeaders() });
       setProducts(res.data);
     } catch (err) {
-      toast.error("Failed to fetch products ❌");
+      toast.error("Failed to fetch products ");
       console.error(err);
     }
   };
