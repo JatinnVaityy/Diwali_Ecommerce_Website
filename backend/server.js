@@ -10,7 +10,7 @@ const productRoutes = require('./routes/productRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const authRoutes = require('./routes/authRoutes');
-
+const razorpayRoutes = require('./routes/razorpayRoutes'); // <--- Razorpay routes
 const { seedAdminIfNeeded } = require('./utils/seedAdmin');
 
 const app = express();
@@ -18,7 +18,7 @@ const app = express();
 // Middlewares
 app.use(helmet());
 app.use(cors());
-app.use(express.json({ limit: '10mb' })); // For base64 images
+app.use(express.json({ limit: '10mb' }));
 app.use(morgan('dev'));
 
 // Connect to MongoDB
@@ -34,6 +34,7 @@ app.use('/api/auth', authRoutes);          // user register/login
 app.use('/api/admin', adminRoutes);        // admin login
 app.use('/api/products', productRoutes);   // products (public + admin)
 app.use('/api/orders', orderRoutes);       // orders (user + admin)
+app.use('/api/razorpay', razorpayRoutes);  // Razorpay payment routes
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ ok: true }));
@@ -42,11 +43,7 @@ app.get('/api/health', (req, res) => res.json({ ok: true }));
 if (process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(__dirname, '..', 'frontend', 'dist');
   app.use(express.static(frontendPath));
-
-  // Serve React app for all other routes
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'index.html'));
-  });
+  app.get('*', (req, res) => res.sendFile(path.join(frontendPath, 'index.html')));
 }
 
 // Start server

@@ -30,7 +30,7 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-[#fff7ed] text-gray-800">
+    <div className="min-h-screen bg-[#fff7ed] text-gray-800 overflow-hidden md:overflow-auto">
       {/* Hero Section */}
       <section className="flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-16 bg-gradient-to-b from-orange-50 to-[#fff7ed]">
         <div className="max-w-xl text-center md:text-left">

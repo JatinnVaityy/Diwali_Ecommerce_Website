@@ -9,26 +9,37 @@ export default function AdminLogin() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false); // state to toggle password
   const navigate = useNavigate();
+const submit = async (e) => {
+  e.preventDefault();
 
-  const submit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await API.post("/admin/login", form);
-      localStorage.setItem("admin_token", res.data.token);
-      toast.success("Admin login successful", { autoClose: 2000 });
-      navigate("/admin/dashboard");
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Login failed", { autoClose: 3000 });
-    }
-  };
+  // Prevent admin login if user is already logged in
+  if (localStorage.getItem("token")) {
+    toast.error(
+      "A user is already logged in. Logout first to login as admin.",
+      { autoClose: 3000 }
+    );
+    return;
+  }
+
+  try {
+    const res = await API.post("/admin/login", form);
+    localStorage.setItem("admin_token", res.data.token);
+    toast.success("Admin login successful", { autoClose: 2000 });
+    navigate("/admin/dashboard");
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Login failed", {
+      autoClose: 3000,
+    });
+  }
+};
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-[#fff7ed]">
       <form
         onSubmit={submit}
         className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg space-y-6"
       >
-        <h2 className="text-2xl font-bold text-center text-gray-800">Admin Login</h2>
+        <h2 className="text-2xl font-bold text-center text-orange-700">Admin Login</h2>
 
         <div className="flex flex-col space-y-4">
           <input

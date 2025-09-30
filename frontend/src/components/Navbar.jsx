@@ -20,22 +20,22 @@ export default function Navbar() {
   const { items } = useCart();
 
   const [menuOpen, setMenuOpen] = useState(false);
+const logoutUser = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  navigate("/");
+};
 
-  const logoutUser = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-  };
-
-  const logoutAdmin = () => {
-    localStorage.removeItem("admin_token");
-    navigate("/");
-  };
+const logoutAdmin = () => {
+  localStorage.removeItem("admin_token");
+  navigate("/");
+};
 
   // total quantity instead of just length
   const cartCount = items.reduce((sum, i) => sum + i.qty, 0);
 
   return (
-    <nav className="bg-yellow-100 shadow p-4 relative z-50">
+    <nav className="bg-yellow-100 shadow p-4 relative z-50 sticky top-0">
       <div className="container mx-auto flex justify-between items-center">
         {/* Brand */}
         <Link to="/" className="font-bold text-xl text-orange-700">

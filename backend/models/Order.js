@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // optional link to user
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   customerName: { type: String, required: true },
   customerEmail: { type: String, required: true },
   address: { type: String, required: true },
@@ -12,7 +12,19 @@ const orderSchema = new mongoose.Schema({
     price: Number
   }],
   totalAmount: { type: Number, required: true },
-  paymentStatus: { type: String, enum: ['pending', 'paid', 'failed'], default: 'pending' },
+  status: {
+    type: String,
+    enum: ['pending', 'cancelled', 'delivered', 'accepted'], // added accepted
+    default: 'pending'
+  },
+  paymentStatus: { 
+    type: String, 
+    enum: ['pending', 'paid', 'failed'], 
+    default: 'pending' 
+  },
+  razorpayOrderId: { type: String },
+  razorpayPaymentId: { type: String },
+  razorpaySignature: { type: String },
   createdAt: { type: Date, default: Date.now }
 });
 

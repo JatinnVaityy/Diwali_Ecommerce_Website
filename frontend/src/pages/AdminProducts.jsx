@@ -3,9 +3,10 @@ import API from "../api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// Helper to get admin token header
 function adminHeaders() {
-  const t = localStorage.getItem("admin_token");
-  return { Authorization: `Bearer ${t}` };
+  const token = localStorage.getItem("admin_token");
+  return { Authorization: `Bearer ${token}` };
 }
 
 export default function AdminProducts() {
@@ -20,15 +21,22 @@ export default function AdminProducts() {
   });
   const [editing, setEditing] = useState(null);
 
+  // Fetch products on mount
   useEffect(() => {
     fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
-    const res = await API.get("/products");
-    setProducts(res.data);
+    try {
+      const res = await API.get("/products", { headers: adminHeaders() });
+      setProducts(res.data);
+    } catch (err) {
+      toast.error("Failed to fetch products ❌");
+      console.error(err);
+    }
   };
 
+  // Submit product (add or update)
   const submit = async (e) => {
     e.preventDefault();
     try {
@@ -37,6 +45,7 @@ export default function AdminProducts() {
         price: Number(form.price),
         stock: Number(form.stock),
       };
+
       if (editing) {
         const res = await API.put(`/products/${editing}`, payload, {
           headers: adminHeaders(),
@@ -44,7 +53,6 @@ export default function AdminProducts() {
         setProducts((prev) =>
           prev.map((p) => (p._id === res.data._id ? res.data : p))
         );
-        setEditing(null);
         toast.success("Product updated successfully ✅");
       } else {
         const res = await API.post("/products", payload, {
@@ -53,29 +61,44 @@ export default function AdminProducts() {
         setProducts((prev) => [res.data, ...prev]);
         toast.success("Product added successfully 🎉");
       }
-      setForm({ name: "", description: "", price: "", stock: "", image: "", category: "" });
+
+      resetForm();
     } catch (err) {
       toast.error(err.response?.data?.message || "Error ❌");
+      console.error(err);
     }
   };
 
-  const edit = (p) => {
-    setEditing(p._id);
+  // Edit product
+  const edit = (product) => {
+    setEditing(product._id);
     setForm({
-      name: p.name,
-      description: p.description || "",
-      price: p.price,
-      stock: p.stock,
-      image: p.image || "",
-      category: p.category || "",
+      name: product.name,
+      description: product.description || "",
+      price: product.price,
+      stock: product.stock,
+      image: product.image || "",
+      category: product.category || "",
     });
   };
 
+  // Delete product
   const remove = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
-    await API.delete(`/products/${id}`, { headers: adminHeaders() });
-    setProducts((prev) => prev.filter((p) => p._id !== id));
-    toast.success("Product deleted successfully 🗑️");
+    try {
+      await API.delete(`/products/${id}`, { headers: adminHeaders() });
+      setProducts((prev) => prev.filter((p) => p._id !== id));
+      toast.success("Product deleted successfully 🗑️");
+    } catch (err) {
+      toast.error("Failed to delete product ❌");
+      console.error(err);
+    }
+  };
+
+  // Reset form
+  const resetForm = () => {
+    setEditing(null);
+    setForm({ name: "", description: "", price: "", stock: "", image: "", category: "" });
   };
 
   return (
@@ -91,7 +114,7 @@ export default function AdminProducts() {
           required
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
-          placeholder="Name"
+          placeholder="Product Name"
           className="p-3 border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none transition"
         />
         <input
@@ -102,18 +125,18 @@ export default function AdminProducts() {
         />
         <input
           required
+          type="number"
           value={form.price}
           onChange={(e) => setForm({ ...form, price: e.target.value })}
           placeholder="Price"
-          type="number"
           className="p-3 border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none transition"
         />
         <input
           required
+          type="number"
           value={form.stock}
           onChange={(e) => setForm({ ...form, stock: e.target.value })}
           placeholder="Stock"
-          type="number"
           className="p-3 border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none transition"
         />
         <textarea
@@ -125,7 +148,7 @@ export default function AdminProducts() {
         <input
           value={form.image}
           onChange={(e) => setForm({ ...form, image: e.target.value })}
-          placeholder="Image URL or base64"
+          placeholder="Image URL or Base64"
           className="p-3 border rounded-lg md:col-span-2 focus:ring-2 focus:ring-orange-400 focus:outline-none transition"
         />
         <div className="md:col-span-2 flex gap-3">
@@ -133,15 +156,12 @@ export default function AdminProducts() {
             type="submit"
             className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium shadow-md transition"
           >
-            {editing ? "Update" : "Add Product"}
+            {editing ? "Update Product" : "Add Product"}
           </button>
           {editing && (
             <button
               type="button"
-              onClick={() => {
-                setEditing(null);
-                setForm({ name: "", description: "", price: "", stock: "", image: "", category: "" });
-              }}
+              onClick={resetForm}
               className="px-4 py-2 border rounded-lg hover:bg-gray-100 transition"
             >
               Cancel
