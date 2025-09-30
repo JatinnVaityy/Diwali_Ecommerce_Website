@@ -53,18 +53,18 @@ export default function AdminProducts() {
         setProducts((prev) =>
           prev.map((p) => (p._id === res.data._id ? res.data : p))
         );
-        toast.success("Product updated successfully ✅");
+        toast.success("Product updated successfully ");
       } else {
         const res = await API.post("/products", payload, {
           headers: adminHeaders(),
         });
         setProducts((prev) => [res.data, ...prev]);
-        toast.success("Product added successfully 🎉");
+        toast.success("Product added successfully ");
       }
 
       resetForm();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Error ❌");
+      toast.error(err.response?.data?.message || "Error ");
       console.error(err);
     }
   };
@@ -88,9 +88,9 @@ export default function AdminProducts() {
     try {
       await API.delete(`/products/${id}`, { headers: adminHeaders() });
       setProducts((prev) => prev.filter((p) => p._id !== id));
-      toast.success("Product deleted successfully 🗑️");
+      toast.success("Product deleted successfully ");
     } catch (err) {
-      toast.error("Failed to delete product ❌");
+      toast.error("Failed to delete product ");
       console.error(err);
     }
   };
@@ -154,7 +154,7 @@ export default function AdminProducts() {
         <div className="md:col-span-2 flex gap-3">
           <button
             type="submit"
-            className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium shadow-md transition"
+            className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium shadow-md transition"
           >
             {editing ? "Update Product" : "Add Product"}
           </button>

@@ -101,7 +101,7 @@ export default function ProductPage() {
                 {/* Checkout button */}
                 <button
                   onClick={() => navigate("/cart")}
-                  className="px-6 py-3 rounded-lg bg-green-600 hover:bg-green-700 text-white font-medium shadow-md transition duration-300"
+                  className="px-6 py-3 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-medium shadow-md transition duration-300"
                 >
                   Checkout
                 </button>
