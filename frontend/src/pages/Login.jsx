@@ -29,15 +29,23 @@ export default function Login() {
       toast.success('Login successful!', { autoClose: 2000 });
       navigate('/');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed', { autoClose: 3000 });
+      const msg = err.response?.data?.message;
+
+      if (msg === 'User not found') {
+        toast.error('Email does not exist', { autoClose: 3000 });
+      } else if (msg === 'Incorrect password') {
+        toast.error('Password mismatch', { autoClose: 3000 });
+      } else {
+        toast.error(msg || 'Login failed', { autoClose: 3000 });
+      }
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#fff7ed]  from-orange-50 to-orange-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#fff7ed] px-4">
       <form
         onSubmit={submit}
-        className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg space-y-5 "
+        className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg space-y-5"
       >
         <h2 className="text-2xl font-bold text-center text-orange-700">Login</h2>
 

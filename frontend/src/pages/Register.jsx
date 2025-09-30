@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import API from '../api';
 import { useNavigate, Link } from 'react-router-dom';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'; // import eye icons
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const [showPassword, setShowPassword] = useState(false); // toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const submit = async (e) => {
     e.preventDefault();
     try {
       await API.post('/auth/register', form);
-      alert('Registered successfully — please login');
+      toast.success('Registered successfully — please login');
       navigate('/login');
     } catch (err) {
-      alert(err.response?.data?.message || 'Registration failed');
+      toast.error(err.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -67,7 +69,7 @@ export default function Register() {
         </button>
 
         <p className="text-sm text-center text-gray-600">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link to="/login" className="text-orange-600 font-medium hover:underline">
             Login
           </Link>
