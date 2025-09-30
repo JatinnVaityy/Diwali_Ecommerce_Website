@@ -22,7 +22,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br bg-[#fff7ed] px-4">
       <form
         onSubmit={submit}
         className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg space-y-5 border border-orange-200"
